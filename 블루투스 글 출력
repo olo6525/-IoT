@@ -1,0 +1,41 @@
+#include <SoftwareSerial.h>
+#include "U8glib.h"
+
+U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NONE);
+
+SoftwareSerial BTSerial(11, 10); //RX:2, TX :3
+
+String str;
+String str2;
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  BTSerial.begin(9600);
+  BTSerial.write("AT+NAMEcoin");
+ 
+
+
+}
+// 순수하게 단방향 통신을 위한 코드 입니다. 서버->아두이도 단방향입니다.
+void loop() {
+  // put your main code here, to run repeatedly:
+  u8g.firstPage();
+  do{
+    u8g.setFont(u8g_font_unifont);//폰트설정
+    u8g.setPrintPos(0,30);
+
+     while(BTSerial.available()>0){   //뭔가 오면
+     str=BTSerial.readStringUntil('\n');  //그 내용을 읽어서 str에 저장
+    
+     }
+   
+
+     Serial.println(str); 
+     u8g.print(str);  //소형 디스플레이 와면에 글 출력 (한글 지원 안됨)
+     
+   
+  }while(u8g.nextPage());
+ delay(3000);
+
+}
