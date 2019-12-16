@@ -1,0 +1,55 @@
+#include <SoftwareSerial.h>
+#include "U8glib.h"
+
+U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NONE);
+
+//SoftwareSerial BTSerial(11, 10); //RX:2, TX :3
+
+String str;
+int ypos=10;
+int snum=0;
+int leng;
+
+void setup() {
+  // put your setup code here, to run once:
+
+  pinMode(13, OUTPUT);
+  pinMode(12, INPUT);
+  Serial.begin(9600);
+  //BTSerial.begin(9600);
+  //BTSerial.write("AT+NAMEcoin");
+ 
+  digitalWrite(13, LOW);
+  delayMicroseconds(2);
+  digitalWrite(13, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(13, LOW);
+
+  const unsigned long duration = pulseIn(12,HIGH);
+  leng = duration/29/2;
+  
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+   
+  
+  u8g.firstPage();
+  do{
+  
+  
+    u8g.setFont(u8g_font_unifont);//폰트설정
+    u8g.setPrintPos(0,ypos);
+
+     u8g.print(leng);
+     u8g.print("  cm");
+     
+     
+     
+   
+  }while(u8g.nextPage());
+ 
+delay(3000);
+}
